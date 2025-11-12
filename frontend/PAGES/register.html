@@ -1,0 +1,87 @@
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <div class="logo">🎓</div>
+            <h1>UTP Monitoreo</h1>
+            <p>Sistema Académico-Emocional</p>
+        </div>
+
+        <form id="registerForm" onsubmit="handleRegister(event)">
+            <div class="info-box" style="background: #e3f2fd; border-left: 4px solid #1a237e; padding: 1rem; margin-bottom: 1rem; font-size: 0.85rem;">
+                <strong>💡 Importante:</strong><br>
+                • Estudiantes: correo con <strong>U</strong>número@utp.edu.pe<br>
+                • Profesores: correo con <strong>C</strong>número@utp.edu.pe
+            </div>
+
+            <div class="form-group">
+                <label for="reg-codigo">Código *</label>
+                <input type="text" id="reg-codigo" placeholder="Ej: U25222195 o C00001" required>
+            </div>
+
+            <div class="form-group">
+                <label for="reg-nombre">Nombre Completo *</label>
+                <input type="text" id="reg-nombre" placeholder="Tu nombre completo" required>
+            </div>
+
+            <div class="form-group">
+                <label for="reg-dni">DNI *</label>
+                <input type="text" id="reg-dni" placeholder="12345678" maxlength="8" required>
+            </div>
+
+            <div class="form-group">
+                <label for="reg-email">Correo Institucional *</label>
+                <input type="email" id="reg-email" placeholder="U25222195@utp.edu.pe o C00001@utp.edu.pe" required onchange="detectarRol()">
+            </div>
+
+            <div class="form-group">
+                <label for="reg-programa" id="label-programa">Programa Académico / Especialidad *</label>
+                <select id="reg-programa" required>
+                    <option value="">-- Selecciona --</option>
+                    <option value="Ingeniería Informática">Ingeniería Informática</option>
+                    <option value="Ingeniería Civil">Ingeniería Civil</option>
+                    <option value="Administración">Administración de Empresas</option>
+                    <option value="Matemáticas">Matemáticas</option>
+                    <option value="Física">Física</option>
+                    <option value="Inglés">Inglés</option>
+                </select>
+            </div>
+
+            <div class="form-group" id="telefono-group" style="display: none;">
+                <label for="reg-telefono">Teléfono</label>
+                <input type="tel" id="reg-telefono" placeholder="987654321">
+            </div>
+
+            <div class="form-group">
+                <label for="reg-password">Contraseña *</label>
+                <input type="password" id="reg-password" placeholder="Mínimo 8 caracteres" required>
+            </div>
+
+            <div class="form-group">
+                <label for="reg-password-confirm">Confirmar Contraseña *</label>
+                <input type="password" id="reg-password-confirm" placeholder="Repite tu contraseña" required>
+            </div>
+
+            <button type="submit" class="btn-submit">Crear Cuenta</button>
+        </form>
+
+        <div class="auth-footer">
+            ¿Ya tienes cuenta? <a href="#" onclick="window.loadPage('/login'); return false;">Inicia sesión aquí</a>
+        </div>
+    </div>
+</div>
+
+<script>
+function detectarRol() {
+    const email = document.getElementById('reg-email').value.toUpperCase();
+    const labelPrograma = document.getElementById('label-programa');
+    const telefonoGroup = document.getElementById('telefono-group');
+    
+    if (email.startsWith('C')) {
+        labelPrograma.textContent = 'Especialidad / Curso que enseña *';
+        telefonoGroup.style.display = 'block';
+    } else {
+        labelPrograma.textContent = 'Programa Académico *';
+        telefonoGroup.style.display = 'none';
+    }
+}
+</script>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Profesor - UTP</title>
+    <link rel="stylesheet" href="../public/css/styles.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- NAVBAR -->
+        <div class="navbar">
+            <div class="navbar-left">
+                <h1>👨‍🏫 Sistema Monitoreo UTP - Profesor</h1>
+            </div>
+            <div class="navbar-right">
+                <div class="user-info">
+                    <div class="user-avatar" id="user-avatar">P</div>
+                    <div>
+                        <div class="user-name" id="user-name">Cargando...</div>
+                        <div class="user-role">Profesor</div>
+                    </div>
+                </div>
+                <button class="btn-logout" onclick="logout()">Cerrar Sesión</button>
+            </div>
+        </div>
+
+        <!-- HEADER BIENVENIDA -->
+        <div class="header-welcome">
+            <h2 id="welcome-message">Bienvenido Profesor</h2>
+            <p id="profesor-info">Cargando información...</p>
+        </div>
+
+        <!-- MIS CURSOS -->
+        <div class="table-section">
+            <h3>📚 MIS CURSOS</h3>
+            <div id="cursos-container">
+                <p style="text-align: center; padding: 2rem; color: #999;">Cargando cursos...</p>
+            </div>
+        </div>
+
+        <!-- ESTUDIANTES DEL CURSO SELECCIONADO -->
+        <div class="table-section" id="estudiantes-section" style="display: none;">
+            <h3 id="curso-seleccionado-titulo">📋 Estudiantes</h3>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Nombre</th>
+                            <th>Parcial 1</th>
+                            <th>Parcial 2</th>
+                            <th>Promedio</th>
+                            <th>Inasistencias</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="estudiantes-tbody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="../public/js/dashboard-profesor.js"></script>
+</body>
+</html>

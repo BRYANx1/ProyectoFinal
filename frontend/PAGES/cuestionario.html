@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Cuestionario - UTP</title>
+    <link rel="stylesheet" href="../public/css/styles.css">
+</head>
+<body>
+    <div style="max-width: 800px; margin: 2rem auto; padding: 2rem; background: white; border-radius: 10px;">
+        <h2 style="color: #1a237e; text-align: center;">📋 Evaluación Psicológica</h2>
+        <p style="text-align: center; color: #666; margin-bottom: 2rem;">
+            Responde estas 12 preguntas del 1 (Nunca) al 5 (Siempre)
+        </p>
+
+        <form id="cuestionarioForm" onsubmit="enviarCuestionario(event)">
+            <div id="preguntas-container"></div>
+            
+            <button type="submit" class="btn-submit" style="margin-top: 2rem;">
+                Enviar Cuestionario
+            </button>
+        </form>
+    </div>
+
+    <script src="../public/js/cuestionario.js"></script>
+</body>
+</html>
