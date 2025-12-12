@@ -10,10 +10,9 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// SERVIR ARCHIVOS ESTÁTICOS DEL FRONTEND
-app.use(express.static(path.join(__dirname, '../frontend')));
+// SERVIR ARCHIVOS ESTÁTICOS DEL FRONTEND (solo public)
+app.use(express.static(path.join(__dirname, '../frontend/public')));
 app.use('/pages', express.static(path.join(__dirname, '../frontend/pages')));
-app.use('/public', express.static(path.join(__dirname, '../frontend/public')));
 
 // RUTAS DE LA API
 app.use('/api/auth', require('./routes/auth.routes'));
