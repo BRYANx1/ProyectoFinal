@@ -145,10 +145,14 @@ input::placeholder {
     }
 }
 
+/* ========================================= */
 /* DASHBOARD STYLES */
+/* ========================================= */
+
 .dashboard-container {
     background: #f0f2f5;
     min-height: 100vh;
+    padding-bottom: 2rem;
 }
 
 .navbar {
@@ -206,6 +210,12 @@ input::placeholder {
     border-radius: 5px;
     cursor: pointer;
     font-weight: 600;
+    transition: 0.3s;
+}
+
+.btn-logout:hover {
+    background: #ff5252;
+    transform: translateY(-2px);
 }
 
 .header-welcome {
@@ -213,6 +223,12 @@ input::placeholder {
     padding: 2rem;
     margin: 2rem;
     border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.header-welcome h2 {
+    color: #1a237e;
+    margin-bottom: 0.5rem;
 }
 
 .cards-row {
@@ -227,6 +243,12 @@ input::placeholder {
     border-radius: 10px;
     padding: 1.5rem;
     box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.12);
 }
 
 .card-title {
@@ -242,11 +264,39 @@ input::placeholder {
     color: #283593;
 }
 
+.card-subtitle {
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: 0.5rem;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #e0e0e0;
+    border-radius: 10px;
+    margin-top: 1rem;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+    border-radius: 10px;
+    transition: width 0.5s ease;
+}
+
 .alerts-section {
     background: white;
     border-radius: 10px;
     padding: 1.5rem;
     margin: 0 2rem 2rem 2rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+.alerts-section h3 {
+    color: #1a237e;
+    margin-bottom: 1.5rem;
 }
 
 .alert-item {
@@ -256,6 +306,12 @@ input::placeholder {
     border-left: 5px solid;
     display: flex;
     gap: 1rem;
+    transition: 0.3s;
+}
+
+.alert-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 .alert-item.critica {
@@ -277,11 +333,27 @@ input::placeholder {
     font-size: 1.5rem;
 }
 
+.alert-content h4 {
+    color: #1a237e;
+    margin-bottom: 0.5rem;
+}
+
+.alert-content p {
+    color: #555;
+    line-height: 1.5;
+}
+
 .table-section {
     background: white;
     border-radius: 10px;
     padding: 1.5rem;
     margin: 0 2rem 2rem 2rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+.table-section h3 {
+    color: #1a237e;
+    margin-bottom: 1.5rem;
 }
 
 table {
@@ -293,6 +365,8 @@ th {
     background: #f5f5f5;
     padding: 1rem;
     text-align: left;
+    font-weight: 600;
+    color: #1a237e;
 }
 
 td {
@@ -300,19 +374,240 @@ td {
     border-bottom: 1px solid #f0f0f0;
 }
 
-.status-badge {
+tr:hover {
+    background: #fafafa;
+}
+
+.badge {
     padding: 0.4rem 0.8rem;
     border-radius: 20px;
     font-size: 0.85rem;
     font-weight: 600;
 }
 
-.status-aprobado {
+.badge.aprobado {
     background: #c8e6c9;
     color: #1b5e20;
 }
 
-.status-riesgo {
+.badge.riesgo {
     background: #ffe0b2;
     color: #e65100;
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 1rem;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(26, 35, 126, 0.4);
+}
+
+/* ========================================= */
+/* ESTILOS DEL BOTÓN FLOTANTE DE TELEGRAM */
+/* ========================================= */
+
+.telegram-float-button {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #0088cc 0%, #00a0e9 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(0, 136, 204, 0.4);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 9999;
+    border: none;
+    animation: pulse-telegram 2s infinite;
+}
+
+.telegram-float-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 30px rgba(0, 136, 204, 0.6);
+}
+
+.telegram-float-button svg {
+    width: 32px;
+    height: 32px;
+}
+
+/* Animación de pulso para el botón */
+@keyframes pulse-telegram {
+    0%, 100% {
+        box-shadow: 0 4px 20px rgba(0, 136, 204, 0.4);
+    }
+    50% {
+        box-shadow: 0 4px 30px rgba(0, 136, 204, 0.8);
+    }
+}
+
+/* Tooltip informativo */
+.telegram-tooltip {
+    position: fixed;
+    bottom: 100px;
+    right: 30px;
+    background: white;
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    display: none;
+    z-index: 9998;
+    max-width: 250px;
+    animation: slideInTooltip 0.3s ease;
+}
+
+.telegram-tooltip.show {
+    display: block;
+}
+
+.telegram-tooltip h4 {
+    margin: 0 0 0.5rem 0;
+    color: #0088cc;
+    font-size: 1rem;
+}
+
+.telegram-tooltip p {
+    margin: 0;
+    color: #666;
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+.telegram-tooltip::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    right: 20px;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid white;
+}
+
+@keyframes slideInTooltip {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Badge de notificación en el botón */
+.telegram-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #ff4444;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: bold;
+    border: 2px solid white;
+    animation: pulse-badge 1.5s infinite;
+}
+
+@keyframes pulse-badge {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+/* ========================================= */
+/* RESPONSIVE DESIGN */
+/* ========================================= */
+
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .navbar-right {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .cards-row {
+        grid-template-columns: 1fr;
+        margin: 0 1rem 1rem 1rem;
+    }
+
+    .header-welcome,
+    .alerts-section,
+    .table-section {
+        margin: 0 1rem 1rem 1rem;
+    }
+
+    /* Ajustes para el botón de Telegram en móvil */
+    .telegram-float-button {
+        bottom: 20px;
+        right: 20px;
+        width: 55px;
+        height: 55px;
+    }
+
+    .telegram-float-button svg {
+        width: 28px;
+        height: 28px;
+    }
+
+    .telegram-tooltip {
+        bottom: 85px;
+        right: 20px;
+        max-width: 200px;
+        font-size: 0.8rem;
+    }
+
+    .telegram-badge {
+        width: 18px;
+        height: 18px;
+        font-size: 0.65rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar h1 {
+        font-size: 1.2rem;
+    }
+
+    .card-value {
+        font-size: 1.5rem;
+    }
+
+    table {
+        font-size: 0.85rem;
+    }
+
+    th, td {
+        padding: 0.7rem;
+    }
 }

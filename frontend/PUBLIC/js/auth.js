@@ -88,8 +88,15 @@ async function handleRegisterEstudiante() {
         const data = await response.json();
 
         if (response.ok) {
-            alert('✓ Registro exitoso. Inicia sesión');
-            window.loadPage('/login');
+            // Guardar token para la inscripción de cursos
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('rol', data.rol);
+            localStorage.setItem('recien_registrado', 'true'); // Flag para saber que es nuevo
+            
+            alert('✓ Registro exitoso. Ahora selecciona tus cursos.');
+            
+            // Redirigir a inscripción de cursos
+            window.location.href = '/pages/inscripcion-cursos.html';
         } else {
             alert('Error: ' + data.error);
         }

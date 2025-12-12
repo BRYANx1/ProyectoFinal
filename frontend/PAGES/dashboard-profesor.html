@@ -5,63 +5,162 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Profesor - UTP</title>
     <link rel="stylesheet" href="../public/css/styles.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f2f4f7;
+        }
+
+        header {
+            background: #0a2a7a;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header .perfil {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        header button {
+            background: #e74c3c;
+            border: none;
+            padding: 10px 20px;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        header button:hover {
+            background: #c0392b;
+        }
+
+        .contenido {
+            padding: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .bienvenida, .cursos {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .bienvenida h2 {
+            color: #0a2a7a;
+            margin-bottom: 10px;
+        }
+
+        .bienvenida p {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .cursos h3 {
+            color: #0a2a7a;
+            margin-bottom: 20px;
+        }
+
+        .cursos-container {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .curso-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+
+        .curso-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .curso-card h4 {
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .curso-card p {
+            margin: 8px 0;
+            font-size: 0.95rem;
+        }
+
+        .curso-card button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            border: none;
+            background: white;
+            color: #0a2a7a;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.3s;
+        }
+
+        .curso-card button:hover {
+            background: #f0f0f0;
+            transform: scale(1.05);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .error {
+            text-align: center;
+            padding: 40px;
+            color: #f44336;
+        }
+    </style>
 </head>
+
 <body>
-    <div class="dashboard-container">
-        <!-- NAVBAR -->
-        <div class="navbar">
-            <div class="navbar-left">
-                <h1>👨‍🏫 Sistema Monitoreo UTP - Profesor</h1>
-            </div>
-            <div class="navbar-right">
-                <div class="user-info">
-                    <div class="user-avatar" id="user-avatar">P</div>
-                    <div>
-                        <div class="user-name" id="user-name">Cargando...</div>
-                        <div class="user-role">Profesor</div>
-                    </div>
-                </div>
-                <button class="btn-logout" onclick="logout()">Cerrar Sesión</button>
-            </div>
-        </div>
 
-        <!-- HEADER BIENVENIDA -->
-        <div class="header-welcome">
-            <h2 id="welcome-message">Bienvenido Profesor</h2>
-            <p id="profesor-info">Cargando información...</p>
-        </div>
-
-        <!-- MIS CURSOS -->
-        <div class="table-section">
-            <h3>📚 MIS CURSOS</h3>
-            <div id="cursos-container">
-                <p style="text-align: center; padding: 2rem; color: #999;">Cargando cursos...</p>
-            </div>
-        </div>
-
-        <!-- ESTUDIANTES DEL CURSO SELECCIONADO -->
-        <div class="table-section" id="estudiantes-section" style="display: none;">
-            <h3 id="curso-seleccionado-titulo">📋 Estudiantes</h3>
-            <div style="overflow-x: auto;">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Código</th>
-                            <th>Nombre</th>
-                            <th>Parcial 1</th>
-                            <th>Parcial 2</th>
-                            <th>Promedio</th>
-                            <th>Inasistencias</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody id="estudiantes-tbody"></tbody>
-                </table>
-            </div>
-        </div>
+<header>
+    <h2>🎓 Sistema Monitoreo UTP - Profesor</h2>
+    <div class="perfil">
+        <span id="nombre-profesor">Cargando...</span>
+        <button onclick="cerrarSesion()">Cerrar Sesión</button>
     </div>
+</header>
 
-    <script src="../public/js/dashboard-profesor.js"></script>
+<div class="contenido">
+
+    <section class="bienvenida">
+        <h2>Bienvenido Profesor</h2>
+        <p id="info-profesor">Cargando información...</p>
+    </section>
+
+    <section class="cursos">
+        <h3>📚 MIS CURSOS</h3>
+        <div id="lista-cursos" class="cursos-container">
+            <div class="loading">
+                <p>Cargando cursos...</p>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<script src="../public/js/dashboard-profesor.js"></script>
+
 </body>
 </html>

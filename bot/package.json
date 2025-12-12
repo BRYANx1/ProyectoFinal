@@ -1,0 +1,25 @@
+{
+  "name": "psicologo-utp-bot",
+  "version": "1.0.0",
+  "description": "Bot de Telegram con IA para apoyo psicológico a estudiantes UTP",
+  "main": "telegram-bot.js",
+  "scripts": {
+    "start": "node telegram-bot.js",
+    "dev": "nodemon telegram-bot.js"
+  },
+  "keywords": [
+    "telegram",
+    "bot",
+    "psychology",
+    "mental-health",
+    "utp"
+  ],
+  "author": "Sistema UTP",
+  "license": "MIT",
+  "dependencies": {
+    "node-telegram-bot-api": "^0.64.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}

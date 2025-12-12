@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calificar Estudiantes - UTP</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f4f7;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #0a2a7a;
+            margin-bottom: 1rem;
+        }
+
+        .curso-info {
+            background: #e3f2fd;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background: #0a2a7a;
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: #f5f5f5;
+        }
+
+        input[type="number"] {
+            width: 80px;
+            padding: 0.5rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-save {
+            background: #4caf50;
+            color: white;
+        }
+
+        .btn-save:hover {
+            background: #45a049;
+        }
+
+        .btn-back {
+            background: #666;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .btn-back:hover {
+            background: #555;
+        }
+
+        .promedio {
+            font-weight: 600;
+            color: #0a2a7a;
+        }
+
+        .estado {
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .estado.aprobado {
+            background: #c8e6c9;
+            color: #2e7d32;
+        }
+
+        .estado.riesgo {
+            background: #ffccbc;
+            color: #d84315;
+        }
+
+        .estado.curso {
+            background: #fff9c4;
+            color: #f57f17;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button class="btn btn-back" onclick="volver()">← Volver a Mis Cursos</button>
+        
+        <h2>📝 Calificar Estudiantes</h2>
+        
+        <div class="curso-info" id="curso-info">
+            <p>Cargando información del curso...</p>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Nombre</th>
+                    <th>Parcial 1</th>
+                    <th>Parcial 2</th>
+                    <th>Promedio</th>
+                    <th>Inasistencias</th>
+                    <th>Estado</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody id="estudiantes-tbody">
+                <tr>
+                    <td colspan="8" style="text-align: center; padding: 2rem;">
+                        Cargando estudiantes...
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000/api';
+        const token = localStorage.getItem('token');
+        const urlParams = new URLSearchParams(window.location.search);
+        const idCurso = urlParams.get('id');
+
+        window.addEventListener('load', () => {
+            if (!idCurso) {
+                alert('No se especificó el curso');
+                window.location.href = '/pages/dashboard-profesor.html';
+                return;
+            }
+            cargarDatos();
+        });
+
+        async function cargarDatos() {
+            try {
+                // Cargar info del curso
+                const resCurso = await fetch(`${API_URL}/profesor/curso/${idCurso}/info`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const curso = await resCurso.json();
+                mostrarInfoCurso(curso);
+
+                // Cargar estudiantes
+                const resEst = await fetch(`${API_URL}/profesor/curso/${idCurso}/estudiantes`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const estudiantes = await resEst.json();
+                mostrarEstudiantes(estudiantes);
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al cargar datos');
+            }
+        }
+
+        function mostrarInfoCurso(curso) {
+            document.getElementById('curso-info').innerHTML = `
+                <h3>${curso.nombre_curso}</h3>
+                <p><strong>Código:</strong> ${curso.codigo_curso} | <strong>Créditos:</strong> ${curso.creditos}</p>
+            `;
+        }
+
+        function mostrarEstudiantes(estudiantes) {
+            const tbody = document.getElementById('estudiantes-tbody');
+            
+            if (estudiantes.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 2rem; color: #999;">No hay estudiantes inscritos en este curso</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = '';
+
+            estudiantes.forEach(est => {
+                const promedio = est.promedio_curso || 0;
+                const estado = promedio >= 11 ? 'aprobado' : promedio > 0 ? 'riesgo' : 'curso';
+                const estadoTexto = promedio >= 11 ? 'Aprobado' : promedio > 0 ? 'En riesgo' : 'En curso';
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${est.codigo_utp}</td>
+                    <td>${est.nombre_completo}</td>
+                    <td>
+                        <input type="number" min="0" max="20" step="0.5" 
+                               value="${est.calificacion_parcial1 || ''}" 
+                               id="p1-${est.id_estudiante}"
+                               onchange="calcularPromedio(${est.id_estudiante})">
+                    </td>
+                    <td>
+                        <input type="number" min="0" max="20" step="0.5" 
+                               value="${est.calificacion_parcial2 || ''}" 
+                               id="p2-${est.id_estudiante}"
+                               onchange="calcularPromedio(${est.id_estudiante})">
+                    </td>
+                    <td class="promedio" id="prom-${est.id_estudiante}">${promedio.toFixed(1)}</td>
+                    <td>
+                        <input type="number" min="0" max="50" 
+                               value="${est.inasistencias || 0}" 
+                               id="ina-${est.id_estudiante}">
+                    </td>
+                    <td><span class="estado ${estado}" id="est-${est.id_estudiante}">${estadoTexto}</span></td>
+                    <td>
+                        <button class="btn btn-save" onclick="guardarCalificaciones(${est.id_estudiante}, ${idCurso})">
+                            Guardar
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function calcularPromedio(idEstudiante) {
+            const p1 = parseFloat(document.getElementById(`p1-${idEstudiante}`).value) || 0;
+            const p2 = parseFloat(document.getElementById(`p2-${idEstudiante}`).value) || 0;
+            const prom = (p1 + p2) / 2;
+            
+            document.getElementById(`prom-${idEstudiante}`).textContent = prom.toFixed(1);
+            
+            const estadoEl = document.getElementById(`est-${idEstudiante}`);
+            if (prom >= 11) {
+                estadoEl.className = 'estado aprobado';
+                estadoEl.textContent = 'Aprobado';
+            } else if (prom > 0) {
+                estadoEl.className = 'estado riesgo';
+                estadoEl.textContent = 'En riesgo';
+            } else {
+                estadoEl.className = 'estado curso';
+                estadoEl.textContent = 'En curso';
+            }
+        }
+
+        async function guardarCalificaciones(idEstudiante, idCurso) {
+            const p1 = parseFloat(document.getElementById(`p1-${idEstudiante}`).value) || null;
+            const p2 = parseFloat(document.getElementById(`p2-${idEstudiante}`).value) || null;
+            const inasistencias = parseInt(document.getElementById(`ina-${idEstudiante}`).value) || 0;
+            const promedio = p1 && p2 ? (p1 + p2) / 2 : 0;
+            const estado = promedio >= 11 ? 'Aprobado' : promedio > 0 ? 'En riesgo' : 'En curso';
+
+            try {
+                const res = await fetch(`${API_URL}/profesor/calificar`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        estudiante_id: idEstudiante,
+                        curso_id: idCurso,
+                        calificacion_parcial1: p1,
+                        calificacion_parcial2: p2,
+                        inasistencias: inasistencias,
+                        estado_curso: estado
+                    })
+                });
+
+                if (res.ok) {
+                    alert('✓ Calificaciones guardadas');
+                } else {
+                    alert('Error al guardar');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al guardar calificaciones');
+            }
+        }
+
+        function volver() {
+            window.location.href = '/pages/dashboard-profesor.html';
+        }
+    </script>
+</body>
+</html>

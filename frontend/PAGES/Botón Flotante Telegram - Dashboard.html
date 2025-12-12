@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Botón Telegram Psicólogo</title>
+    <style>
+        /* Botón flotante de Telegram */
+        .telegram-float-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #0088cc 0%, #00a0e9 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(0, 136, 204, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 9999;
+            border: none;
+            animation: pulse 2s infinite;
+        }
+
+        .telegram-float-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(0, 136, 204, 0.6);
+        }
+
+        .telegram-float-button svg {
+            width: 32px;
+            height: 32px;
+            fill: white;
+        }
+
+        /* Animación de pulso */
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 4px 20px rgba(0, 136, 204, 0.4);
+            }
+            50% {
+                box-shadow: 0 4px 30px rgba(0, 136, 204, 0.7);
+            }
+        }
+
+        /* Tooltip */
+        .telegram-tooltip {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 9998;
+            max-width: 250px;
+            animation: slideIn 0.3s ease;
+        }
+
+        .telegram-tooltip.show {
+            display: block;
+        }
+
+        .telegram-tooltip h4 {
+            margin: 0 0 0.5rem 0;
+            color: #0088cc;
+            font-size: 1rem;
+        }
+
+        .telegram-tooltip p {
+            margin: 0;
+            color: #666;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        .telegram-tooltip::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            right: 20px;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid white;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Badge de notificación */
+        .telegram-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff4444;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: bold;
+            border: 2px solid white;
+        }
+
+        @media (max-width: 768px) {
+            .telegram-float-button {
+                bottom: 20px;
+                right: 20px;
+                width: 55px;
+                height: 55px;
+            }
+
+            .telegram-tooltip {
+                bottom: 85px;
+                right: 20px;
+                max-width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Tooltip informativo -->
+    <div class="telegram-tooltip" id="telegramTooltip">
+        <h4>🧠 Apoyo Psicológico 24/7</h4>
+        <p>Habla con nuestro psicólogo virtual en Telegram. ¡Estamos aquí para ayudarte!</p>
+    </div>
+
+    <!-- Botón flotante -->
+    <button class="telegram-float-button" id="telegramButton" onclick="abrirTelegram()">
+        <!-- Logo de Telegram SVG -->
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.18.717-2.146 10.12-2.146 10.12s-.119.597-.537.597c-.179 0-.358-.06-.537-.179l-4.298-3.283-1.791-1.433-3.164-1.075c-.478-.179-.537-.537 0-.716l12.837-4.955c.478-.179.896.119.716.896z"/>
+        </svg>
+        <span class="telegram-badge">1</span>
+    </button>
+
+    <script>
+        // URL del bot de Telegram
+        const TELEGRAM_BOT_USERNAME = 'PsicologoUTPBot';
+
+        // Función para abrir Telegram
+        function abrirTelegram() {
+            const telegramUrl = `https://t.me/${TELEGRAM_BOT_USERNAME}`;
+            window.open(telegramUrl, '_blank');
+        }
+
+        // Mostrar tooltip al cargar la página (solo la primera vez)
+        window.addEventListener('load', () => {
+            const tooltip = document.getElementById('telegramTooltip');
+            const hasSeenTooltip = localStorage.getItem('hasSeenTelegramTooltip');
+            
+            if (!hasSeenTooltip) {
+                setTimeout(() => {
+                    tooltip.classList.add('show');
+                    // Ocultar después de 5 segundos
+                    setTimeout(() => {
+                        tooltip.classList.remove('show');
+                        localStorage.setItem('hasSeenTelegramTooltip', 'true');
+                    }, 5000);
+                }, 2000);
+            }
+        });
+
+        // Mostrar tooltip al pasar el mouse
+        const button = document.getElementById('telegramButton');
+        const tooltip = document.getElementById('telegramTooltip');
+
+        button.addEventListener('mouseenter', () => {
+            tooltip.classList.add('show');
+        });
+
+        button.addEventListener('mouseleave', () => {
+            setTimeout(() => {
+                tooltip.classList.remove('show');
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
