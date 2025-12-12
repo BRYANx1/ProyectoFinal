@@ -4,15 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Sistema Monitoreo UTP</title>
-    <link rel="stylesheet" href="public/css/styles.css">
+    <!-- Ruta corregida para Render: no incluir 'public/' -->
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
     <div id="app"></div>
-    <script src="public/js/auth.js"></script>
+
+    <!-- JS corregido: no incluir 'public/' -->
+    <script src="/js/auth.js"></script>
+    <script src="/js/dashboard.js"></script> <!-- si lo necesitas -->
+    
     <script>
-        window.addEventListener('load', () => {
-            window.loadPage('/login');
-        });
+        // Verifica que loadPage esté definido en algún archivo JS
+        if (typeof window.loadPage === 'function') {
+            window.addEventListener('load', () => {
+                window.loadPage('/login');
+            });
+        } else {
+            console.warn('window.loadPage no está definido.');
+            // Si quieres, puedes redirigir directamente al login:
+            // window.location.href = '/login';
+        }
     </script>
 </body>
 </html>
